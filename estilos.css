@@ -1,0 +1,246 @@
+/* ==============================
+   Variables y reset básicos
+=================================*/
+:root{
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --fg: #0f172a;
+  --muted: #475569;
+  --border: #e2e8f0;
+  --primary: #111827;
+  --primary-600: #1f2937;
+  --link: #2563eb;
+  --success-bg: #ecfdf5;
+  --success-bd: #10b981;
+  --error-bg: #fef2f2;
+  --error-bd: #ef4444;
+  --focus: #60a5fa;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body{
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+               Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji",
+               "Segoe UI Emoji";
+  color: var(--fg);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #e8eefc 0, rgba(232,238,252,0) 60%),
+    radial-gradient(1000px 500px at 110% 10%, #eafaf3 0, rgba(234,250,243,0) 55%),
+    var(--bg);
+  line-height: 1.5;
+}
+
+:focus-visible{
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ==============================
+   Contenedor y cabeceras
+=================================*/
+.container{
+  width: 100%;
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+.header,
+.protegida-header{
+  text-align: center;
+  margin-bottom: 20px;
+}
+.header h1,
+.protegida-header h1{
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 2.5vw, 2rem);
+  letter-spacing: -0.02em;
+}
+.header p,
+.protegida-header p{
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Tarjeta (formularios / zona protegida) */
+.form-container,
+.protegida-body{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.04),
+    0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* ==============================
+   Formularios
+=================================*/
+form{
+  display: grid;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+/* 2 columnas en pantallas anchas para formularios largos (registro) */
+@media (min-width: 720px){
+  form{
+    grid-template-columns: 1fr 1fr;
+  }
+  /* El botón debe ocupar todo el ancho del form */
+  form > .btn{
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  /* Mensajes dentro del form también a ancho completo si los usas ahí */
+  form > .mensaje{
+    grid-column: 1 / -1;
+  }
+}
+
+.form-group{
+  display: grid;
+  gap: 6px;
+}
+
+.form-group label{
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.form-group input{
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--fg);
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.form-group input:hover{ border-color: #cbd5e1; }
+
+.form-group input:focus{
+  border-color: var(--focus);
+  box-shadow: 0 0 0 4px rgba(96,165,250,.25);
+}
+
+/* Ajustes por tipo */
+input[type="date"]{
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff;
+}
+input[type="password"]{ letter-spacing: .02em; }
+
+/* ==============================
+   Botones y enlaces
+=================================*/
+.btn,
+.logout-btn,
+a.button{
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform .05s ease, background-color .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.btn:hover,
+.logout-btn:hover,
+a.button:hover{
+  background: var(--primary-600);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15);
+}
+.btn:active,
+.logout-btn:active,
+a.button:active{ transform: translateY(1px); }
+
+/* Botón de logout con matiz de peligro */
+.logout-btn{ background: #b91c1c; }
+.logout-btn:hover{ background: #991b1b; }
+
+/* ==============================
+   Mensajes de estado
+=================================*/
+.mensaje{
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+.mensaje.exito{
+  background: var(--success-bg);
+  border-color: var(--success-bd);
+  color: #065f46;
+}
+.mensaje.error{
+  background: var(--error-bg);
+  border-color: var(--error-bd);
+  color: #7f1d1d;
+}
+
+/* ==============================
+   Textos auxiliares / listas
+=================================*/
+.saludo{
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.enlace{
+  margin-top: 12px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.enlace a{
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 600;
+}
+.enlace a:hover{ text-decoration: underline; }
+
+/* Lista de datos (protegida.php) */
+.protegida-body ul{
+  list-style: none;
+  padding: 16px 20px;
+  margin: 16px 0;
+  background: #f8f9fc;
+  border-left: 5px solid #11998e;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.protegida-body li{ margin: 6px 0; }
+
+/* ==============================
+   Ajustes rápidos para index
+=================================*/
+.form-container a.btn{ margin: 6px 0; }
+
+/* ==============================
+   Preferencias de movimiento
+=================================*/
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; }
+}
