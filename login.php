@@ -3,11 +3,46 @@ session_start();
 include 'conexion.php';
 $mensaje = "";
 
+// Generar operación matemática si no existe
+if (!isset($_SESSION['math_challenge'])) {
+    $operaciones = ['+', '-', '*'];
+    $op = $operaciones[array_rand($operaciones)];
+    
+    $num1 = mt_rand(1, 10);
+    $num2 = mt_rand(1, 10);
+    
+    // Evitar multiplicación muy grande
+    if ($op === '*' && $num1 * $num2 > 50) {
+        $num2 = mt_rand(1, 5);
+    }
+    
+    // Calcular respuesta correcta
+    switch ($op) {
+        case '+': $respuesta = $num1 + $num2; break;
+        case '-': $respuesta = $num1 - $num2; break;
+        case '*': $respuesta = $num1 * $num2; break;
+    }
+    
+    $_SESSION['math_challenge'] = [
+        'pregunta' => "$num1 $op $num2",
+        'respuesta' => $respuesta,
+        'time' => time()
+    ];
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $correo = trim($_POST['correo']);
     $contrasena = $_POST['contrasena'];
+    $respuesta_usuario = trim($_POST['math_answer'] ?? '');
 
-    if (empty($correo) || empty($contrasena)) {
+    // Validar operación matemática
+    if (!isset($_SESSION['math_challenge']) || 
+        $respuesta_usuario === '' || 
+        (int)$respuesta_usuario !== $_SESSION['math_challenge']['respuesta'] ||
+        (time() - $_SESSION['math_challenge']['time']) > 300) {
+        $mensaje = "Respuesta matemática incorrecta o expirada. Intenta de nuevo.";
+        unset($_SESSION['math_challenge']);
+    } elseif (empty($correo) || empty($contrasena)) {
         $mensaje = "Todos los campos son obligatorios.";
     } else {
         $stmt = $conexion->prepare("SELECT id, nombre, contrasena FROM usuarios WHERE correo = ?");
@@ -21,15 +56,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($contrasena, $hash)) {
                 $_SESSION['usuario_id'] = $id;
                 $_SESSION['usuario_nombre'] = $nombre;
+                unset($_SESSION['math_challenge']);
                 header("Location: protegida.php");
                 exit();
             } else {
-                $mensaje = "Contrasena incorrecta.";
+                $mensaje = "Contraseña incorrecta.";
             }
         } else {
             $mensaje = "Correo no registrado.";
         }
         $stmt->close();
+    }
+    
+    // Regenerar operación si hay error
+    if ($mensaje) {
+        $operaciones = ['+', '-', '*'];
+        $op = $operaciones[array_rand($operaciones)];
+        $num1 = mt_rand(1, 10);
+        $num2 = mt_rand(1, 10);
+        if ($op === '*' && $num1 * $num2 > 50) $num2 = mt_rand(1, 5);
+        switch ($op) {
+            case '+': $respuesta = $num1 + $num2; break;
+            case '-': $respuesta = $num1 - $num2; break;
+            case '*': $respuesta = $num1 * $num2; break;
+        }
+        $_SESSION['math_challenge'] = [
+            'pregunta' => "$num1 $op $num2",
+            'respuesta' => $respuesta,
+            'time' => time()
+        ];
     }
 }
 $conexion->close();
@@ -40,32 +95,42 @@ $conexion->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesion</title>
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Iniciar Sesion</h1>
+            <h1>Iniciar Sesión</h1>
             <p>Accede a tu cuenta</p>
         </div>
         <div class="form-container">
             <?php if ($mensaje): ?>
                 <div class="mensaje error"><?php echo $mensaje; ?></div>
             <?php endif; ?>
+
             <form method="POST">
                 <div class="form-group">
                     <label for="correo">Correo</label>
                     <input type="email" name="correo" id="correo" required>
                 </div>
+
                 <div class="form-group">
-                    <label for="contrasena">Contrasena</label>
+                    <label for="contrasena">Contraseña</label>
                     <input type="password" name="contrasena" id="contrasena" required>
                 </div>
-                <button type="submit" class="btn">Iniciar Sesion</button>
+
+                <div class="form-group">
+                    <label>Resuelve: <strong><?php echo $_SESSION['math_challenge']['pregunta']; ?> = ?</strong></label>
+                    <input type="number" name="math_answer" id="math_answer" min="-50" max="100" required placeholder="Escribe el resultado">
+                    <small style="color: #666; font-size: 0.85rem;">Operación válida por 5 minutos</small>
+                </div>
+
+                <button type="submit" class="btn">Iniciar Sesión</button>
             </form>
+
             <div class="enlace">
-                <a href="registro.php">No tienes cuenta? Registrate</a> | 
+                <a href="registro.php">¿No tienes cuenta? Regístrate</a> | 
                 <a href="index.php">Volver</a>
             </div>
         </div>

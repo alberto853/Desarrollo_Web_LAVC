@@ -1,19 +1,16 @@
 /* ==============================
-   Variables y reset básicos
+   Variables y reset
 =================================*/
 :root{
   --bg: #f6f7fb;
   --card: #ffffff;
-  --fg: #0f172a;
-  --muted: #475569;
-  --border: #e2e8f0;
-  --primary: #111827;
+  --fg: #0f172a;        /* slate-900 */
+  --muted: #475569;     /* slate-600 */
+  --border: #e2e8f0;    /* slate-200 */
+  --primary: #111827;   /* gray-900 */
   --primary-600: #1f2937;
+  --accent: #4f46e5;    /* indigo para acentos */
   --link: #2563eb;
-  --success-bg: #ecfdf5;
-  --success-bd: #10b981;
-  --error-bg: #fef2f2;
-  --error-bd: #ef4444;
   --focus: #60a5fa;
 }
 
@@ -41,12 +38,21 @@ body{
   outline-offset: 2px;
 }
 
+/* Utilidades accesibles */
+.visually-hidden{
+  position: absolute !important;
+  clip: rect(1px,1px,1px,1px);
+  clip-path: inset(50%);
+  height: 1px; width: 1px; overflow: hidden;
+  white-space: nowrap; border: 0; padding: 0; margin: -1px;
+}
+
 /* ==============================
    Contenedor y cabeceras
 =================================*/
 .container{
   width: 100%;
-  max-width: 640px;
+  max-width: 1040px;         /* más ancho para galería */
   margin: 40px auto;
   padding: 0 16px;
 }
@@ -54,12 +60,12 @@ body{
 .header,
 .protegida-header{
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .header h1,
 .protegida-header h1{
-  margin: 0 0 8px;
-  font-size: clamp(1.6rem, 2.5vw, 2rem);
+  margin: 0 0 6px;
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
   letter-spacing: -0.02em;
 }
 .header p,
@@ -68,53 +74,132 @@ body{
   color: var(--muted);
 }
 
-/* Tarjeta (formularios / zona protegida) */
-.form-container,
-.protegida-body{
+/* ==============================
+   Tarjetas y superficies
+=================================*/
+.card{
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 20px;
   box-shadow:
     0 1px 2px rgba(0,0,0,.04),
     0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 /* ==============================
-   Formularios
+   Panel / Marco para contenidos
+=================================*/
+.panel{
+  background: #f0f5ff;            /* azul claro que combina con el fondo */
+  border: 1px solid #cfe0ff;
+  border-left: 6px solid var(--accent);
+  border-radius: 14px;
+  padding: 18px;
+  margin: 18px 0 24px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.04),
+    0 10px 24px rgba(15, 23, 42, 0.06);
+}
+.panel h2{ margin-top: 0; }
+
+/* (Si prefieres verde deportivo: descomenta)
+.panel{
+  background:#eefcf7; border:1px solid #c9f0e1; border-left-color:#11998e;
+}
+*/
+
+/* ==============================
+   Lista de datos del usuario
+=================================*/
+.lista-datos{
+  list-style: none;
+  padding: 16px 20px;
+  margin: 12px 0 20px;
+  background: #f8f9fc;
+  border-left: 5px solid #11998e;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.lista-datos li{ margin: 6px 0; }
+
+/* ==============================
+   Galería de deportes
+=================================*/
+.galeria-deportes{ margin-top: 6px; }
+.galeria-deportes h2{
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+
+.deportes-grid{
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 620px){
+  .deportes-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 980px){
+  .deportes-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.deporte-card{
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.03),
+    0 10px 24px rgba(15, 23, 42, 0.05);
+  transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.deporte-card:hover{
+  transform: translateY(-2px);
+  border-color: #d7dee8;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.05),
+    0 16px 32px rgba(15,23,42,.08);
+}
+
+.deporte-img{
+  width: 100%;
+  aspect-ratio: 16/9;         /* mantiene proporción */
+  object-fit: contain;         /* PNGs transparentes se ven bien */
+  background: linear-gradient(180deg, #f8fafc 0, #f1f5f9 100%);
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+}
+
+.deporte-info h3{
+  margin: 6px 0 6px;
+  font-size: 1.05rem;
+  letter-spacing: -.01em;
+}
+.deporte-info p{
+  margin: 0;
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+/* ==============================
+   Formularios (si los usas aquí)
 =================================*/
 form{
   display: grid;
   gap: 14px;
   margin-top: 10px;
 }
-
-/* 2 columnas en pantallas anchas para formularios largos (registro) */
 @media (min-width: 720px){
-  form{
-    grid-template-columns: 1fr 1fr;
-  }
-  /* El botón debe ocupar todo el ancho del form */
-  form > .btn{
-    grid-column: 1 / -1;
-    width: 100%;
-  }
-  /* Mensajes dentro del form también a ancho completo si los usas ahí */
-  form > .mensaje{
-    grid-column: 1 / -1;
-  }
+  form{ grid-template-columns: 1fr 1fr; }
+  form > .btn{ grid-column: 1 / -1; width: 100%; }
+  form > .mensaje{ grid-column: 1 / -1; }
 }
-
-.form-group{
-  display: grid;
-  gap: 6px;
-}
-
-.form-group label{
-  font-size: 0.95rem;
-  color: var(--muted);
-}
-
+.form-group{ display: grid; gap: 6px; }
+.form-group label{ font-size: 0.95rem; color: var(--muted); }
 .form-group input{
   width: 100%;
   padding: 12px;
@@ -124,32 +209,33 @@ form{
   color: var(--fg);
   transition: border-color .2s, box-shadow .2s;
 }
-
 .form-group input:hover{ border-color: #cbd5e1; }
-
 .form-group input:focus{
   border-color: var(--focus);
   box-shadow: 0 0 0 4px rgba(96,165,250,.25);
 }
-
-/* Ajustes por tipo */
-input[type="date"]{
-  padding: 12px;
-  border-radius: 10px;
-  background: #fff;
-}
+input[type="date"]{ padding: 12px; border-radius: 10px; background: #fff; }
 input[type="password"]{ letter-spacing: .02em; }
 
 /* ==============================
-   Botones y enlaces
+   Botones y acciones
 =================================*/
+.acciones{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 22px 0 10px;
+}
+
 .btn,
+.btn-secondary,
+.btn-back,
 .logout-btn,
 a.button{
   -webkit-appearance: none;
   appearance: none;
   display: inline-block;
-  width: 100%;
   text-align: center;
   padding: 12px 16px;
   border: 1px solid transparent;
@@ -161,6 +247,7 @@ a.button{
   letter-spacing: 0.2px;
   cursor: pointer;
   transition: transform .05s ease, background-color .2s ease, box-shadow .2s ease, border-color .2s ease;
+  min-width: 200px;
 }
 .btn:hover,
 .logout-btn:hover,
@@ -172,75 +259,56 @@ a.button:hover{
 .logout-btn:active,
 a.button:active{ transform: translateY(1px); }
 
-/* Botón de logout con matiz de peligro */
+/* Logout con matiz de peligro */
 .logout-btn{ background: #b91c1c; }
 .logout-btn:hover{ background: #991b1b; }
 
-/* ==============================
-   Mensajes de estado
-=================================*/
-.mensaje{
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 12px;
-  font-size: 0.95rem;
+/* Botón secundario claro (volver al inicio) */
+.btn-secondary,
+.btn-back{
+  background: #f3f4f6;
+  color: #111827;
+  border: 1px solid #e5e7eb;
 }
-.mensaje.exito{
-  background: var(--success-bg);
-  border-color: var(--success-bd);
-  color: #065f46;
-}
-.mensaje.error{
-  background: var(--error-bg);
-  border-color: var(--error-bd);
-  color: #7f1d1d;
+.btn-secondary:hover,
+.btn-back:hover{
+  background: #e5e7eb;
+  border-color: #d1d5db;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
 }
 
 /* ==============================
-   Textos auxiliares / listas
+   Enlaces generales
 =================================*/
-.saludo{
-  background: #f8fafc;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 12px;
-}
-
-.enlace{
-  margin-top: 12px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-.enlace a{
-  color: var(--link);
-  text-decoration: none;
-  font-weight: 600;
-}
-.enlace a:hover{ text-decoration: underline; }
-
-/* Lista de datos (protegida.php) */
-.protegida-body ul{
-  list-style: none;
-  padding: 16px 20px;
-  margin: 16px 0;
-  background: #f8f9fc;
-  border-left: 5px solid #11998e;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-}
-.protegida-body li{ margin: 6px 0; }
-
-/* ==============================
-   Ajustes rápidos para index
-=================================*/
-.form-container a.btn{ margin: 6px 0; }
+a{ color: var(--link); }
+a:hover{ text-decoration: underline; }
 
 /* ==============================
    Preferencias de movimiento
 =================================*/
 @media (prefers-reduced-motion: reduce){
   *{ transition: none !important; }
+}
+
+/* BOTÓN PRINCIPAL (usado en todo el sitio) */
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #003366;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
+}
+
+.btn:hover {
+    background: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 51, 102, 0.3);
 }
