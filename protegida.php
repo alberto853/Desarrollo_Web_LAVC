@@ -14,7 +14,7 @@ $stmt->fetch();
 $stmt->close();
 $conexion->close();
 
-/** Formateo seguro de fecha (opcional) */
+/* Formateo seguro de fecha */
 $fecha_formateada = $fecha_nac ? date('d/m/Y', strtotime($fecha_nac)) : 'N/D';
 ?>
 <!DOCTYPE html>
@@ -28,16 +28,13 @@ $fecha_formateada = $fecha_nac ? date('d/m/Y', strtotime($fecha_nac)) : 'N/D';
 <body>
   <div class="container">
 
-    <!-- Encabezado -->
     <div class="protegida-header">
       <h1>Contenido de la Página</h1>
       <p>Bienvenido, <strong><?php echo htmlspecialchars($nombre); ?></strong></p>
     </div>
 
-    <!-- Panel / Marco para contenido -->
     <div class="panel">
 
-      <!-- (Opcional) Datos del usuario -->
       <section class="datos-usuario">
         <h2>Tus datos</h2>
         <ul class="lista-datos">
@@ -48,13 +45,11 @@ $fecha_formateada = $fecha_nac ? date('d/m/Y', strtotime($fecha_nac)) : 'N/D';
         </ul>
       </section>
 
-      <!-- Galería de Deportes -->
       <section class="galeria-deportes">
         <h2>Nuestros Deportes</h2>
 
         <div class="deportes-grid">
 
-          <!-- Tenis -->
           <article class="deporte-card">
             <img src="imagenes/tenis.png" alt="Tenis" class="deporte-img">
             <div class="deporte-info">
@@ -67,7 +62,6 @@ $fecha_formateada = $fecha_nac ? date('d/m/Y', strtotime($fecha_nac)) : 'N/D';
             </div>
           </article>
 
-          <!-- Culturismo -->
           <article class="deporte-card">
             <img src="imagenes/culturismo.png" alt="Culturismo" class="deporte-img">
             <div class="deporte-info">
@@ -79,7 +73,6 @@ $fecha_formateada = $fecha_nac ? date('d/m/Y', strtotime($fecha_nac)) : 'N/D';
             </div>
           </article>
 
-          <!-- Básquetbol -->
           <article class="deporte-card">
             <img src="imagenes/basket.png" alt="Básquetbol" class="deporte-img">
             <div class="deporte-info">
@@ -95,13 +88,12 @@ $fecha_formateada = $fecha_nac ? date('d/m/Y', strtotime($fecha_nac)) : 'N/D';
         </div>
       </section>
 
-      <!-- Acciones -->
       <div class="acciones">
         <a href="logout.php" class="logout-btn">Cerrar Sesión</a>
         <a href="index.php" class="btn">Volver al Inicio</a>
       </div>
 
 
-  </div><!-- /container -->
+  </div>
 </body>
 </html>
